@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.breeze.breezevideouser.mapper.InfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.breeze.breezevideouser.DO.Info">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="runtime" property="runtime" />
+        <result column="type" property="type" />
+        <result column="release_date" property="releaseDate" />
+        <result column="intro" property="intro" />
+        <result column="director" property="director" />
+        <result column="writer" property="writer" />
+        <result column="star" property="star" />
+        <result column="budget" property="budget" />
+        <result column="revenue" property="revenue" />
+        <result column="language" property="language" />
+        <result column="company" property="company" />
+        <result column="country" property="country" />
+        <result column="rating" property="rating" />
+        <result column="rating_num" property="ratingNum" />
+        <result column="tag" property="tag" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, runtime, type, release_date, intro, director, writer, star, budget, revenue, language, company, country, rating, rating_num, tag
+    </sql>
+
+</mapper>

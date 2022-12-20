@@ -1,0 +1,84 @@
+package ${package.Controller};
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+import org.springframework.web.bind.annotation.RequestMapping;
+#if(${restControllerStyle})
+import org.springframework.web.bind.annotation.RestController;
+#else
+import org.springframework.stereotype.Controller;
+#end
+#if(${superControllerClassPackage})
+import ${superControllerClassPackage};
+#end
+
+import com.breeze.breezevideouser.common.ApiResponse;
+import com.breeze.breezevideouser.log.annotation.WebLog;
+import $!{package.Service}.$!{table.serviceName};
+import ${package.Entity}.${entity};
+
+/**
+ * <p>
+ * $!{table.comment} 前端控制器
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+#if(${restControllerStyle})
+@RestController
+#else
+@Controller
+#end
+@RequestMapping("#if(${package.ModuleName})/${package.ModuleName}#end/#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${table.entityPath}#end")
+#if(${kotlin})
+class ${table.controllerName}#if(${superControllerClass}) : ${superControllerClass}()#end
+
+#else
+#if(${superControllerClass})
+public class ${table.controllerName} extends ${superControllerClass} {
+#else
+public class ${table.controllerName} {
+#end
+
+    final Logger logger = LoggerFactory.getLogger(${table.controllerName}.class);
+    @Autowired
+    private ${table.serviceName} ${table.entityPath}Service;
+
+    @WebLog(description = "添加$!{table.comment}")
+    @PostMapping
+    public ApiResponse save(@RequestBody ${entity} ${table.entityPath}) {
+            return ApiResponse.ok(${table.entityPath}Service.saveOrUpdate(${table.entityPath}));
+            }
+
+    @WebLog(description = "用id删除$!{table.comment}")
+    @DeleteMapping("/{id}")
+    public ApiResponse delete(@PathVariable Integer id) {
+            return ApiResponse.ok(${table.entityPath}Service.removeById(id));
+            }
+
+    @WebLog(description = "查询全部$!{table.comment}")
+    @GetMapping
+    public ApiResponse findAll() {
+            return ApiResponse.ok(${table.entityPath}Service.list());
+            }
+
+    @WebLog(description = "用id查找$!{table.comment}")
+    @GetMapping("/{id}")
+    public ApiResponse findOne(@PathVariable Integer id) {
+            return ApiResponse.ok(${table.entityPath}Service.getById(id));
+            }
+
+    @WebLog(description = "分页$!{table.comment}")
+    @GetMapping("/page")
+    public ApiResponse findPage(@RequestParam Integer pageNum,
+    @RequestParam Integer pageSize) {
+            return ApiResponse.ok(${table.entityPath}Service.page(new Page<>(pageNum, pageSize)));
+    }
+
+}
+#end
