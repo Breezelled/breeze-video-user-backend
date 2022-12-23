@@ -30,7 +30,7 @@ public class Reviews implements Serializable {
     private Integer id;
 
     @ApiModelProperty("电影id")
-    private Long movieId;
+    private Integer movieId;
 
     @ApiModelProperty("评论作者")
     private String author;

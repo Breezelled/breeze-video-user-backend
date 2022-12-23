@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
@@ -19,6 +20,7 @@ import lombok.experimental.Accessors;
  */
 @Getter
 @Setter
+@ToString
 @Accessors(chain = true)
 @ApiModel(value = "Info对象", description = "电影信息")
 public class Info implements Serializable {
@@ -76,6 +78,9 @@ public class Info implements Serializable {
 
     @ApiModelProperty("电影宣传语")
     private String tag;
+
+    @ApiModelProperty("imdbID")
+    private String imdbId;
 
 
 }

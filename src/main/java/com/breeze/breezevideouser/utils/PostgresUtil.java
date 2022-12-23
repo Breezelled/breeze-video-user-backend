@@ -8,6 +8,7 @@ import lombok.Getter;
  */
 @Getter
 public class PostgresUtil {
+
     private final String URL = YamlUtil.getStringByYaml("spring.datasource.url");
     private final String USERNAME = YamlUtil.getStringByYaml("spring.datasource.username");
     private final String PASSWORD = YamlUtil.getStringByYaml("spring.datasource.password");
