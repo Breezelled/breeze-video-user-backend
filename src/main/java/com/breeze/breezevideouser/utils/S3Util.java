@@ -83,7 +83,7 @@ public class S3Util {
                             .build();
             GetObjectPresignRequest getObjectPresignRequest =
                     GetObjectPresignRequest.builder()
-                            .signatureDuration(Duration.ofMinutes(1000))
+                            .signatureDuration(Duration.ofMinutes(1440))
                             .getObjectRequest(getObjectRequest)
                             .build();
             PresignedGetObjectRequest presignedGetObjectRequest =

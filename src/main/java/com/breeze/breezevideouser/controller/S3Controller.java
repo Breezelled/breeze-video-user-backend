@@ -76,4 +76,12 @@ public class S3Controller {
         return ApiResponse.ok(map);
     }
 
+    @WebLog(description = "S3获取对象Url")
+    @GetMapping("url")
+    public ApiResponse getObjectUrl(@RequestParam("objectName") String objectName) {
+        HashMap<Object, Object> map = new HashMap<>();
+        map.put("fileUrl", "s3/" + objectName);
+        return ApiResponse.ok(map);
+    }
+
 }

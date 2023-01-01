@@ -77,19 +77,19 @@ class S3ControllerTest {
 
     @Test
     void generateS3Url() {
-        File[] files = FileUtil.ls("/Users/breeze/XMUT/BD/backend/IMDB/poster");
+        File[] files = FileUtil.ls("/Users/breeze/XMUT/BD/backend/IMDB/trailer");
         for (File f : files) {
-            if ("jpg".equals(FileUtil.extName(f))){
+            if ("mp4".equals(FileUtil.extName(f))){
                 QueryWrapper<Info> queryWrapper = new QueryWrapper<>();
                 queryWrapper.eq("imdb_id", FileUtil.mainName(f));
                 Info info = infoService.getOne(queryWrapper);
                 S3 s3 = new S3();
                 s3.setBucketName("breeze-video-admin");
-                s3.setObjectName("poster/" + FileUtil.getName(f));
+                s3.setObjectName("trailer/" + FileUtil.getName(f));
                 s3.setMovieId(info.getId());
-//                s3Service.save(s3);
+                s3Service.save(s3);
             }
         }
-        System.out.println(FileUtil.getName(files[0]));
+//        System.out.println(FileUtil.getName(files[0]));
     }
 }
