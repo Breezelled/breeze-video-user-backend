@@ -1,16 +1,16 @@
 package com.breeze.breezevideouser.mapper;
 
-import com.breeze.breezevideouser.domain.S3;
+import com.breeze.breezevideouser.domain.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * <p>
- *  Mapper 接口
+ * 用户 Mapper 接口
  * </p>
  *
  * @author breeze
- * @since 2022-12-22
+ * @since 2023-03-14
  */
-public interface S3Mapper extends BaseMapper<S3> {
+public interface UserMapper extends BaseMapper<User> {
 
 }

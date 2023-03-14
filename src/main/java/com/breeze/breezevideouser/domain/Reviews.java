@@ -1,4 +1,4 @@
-package com.breeze.breezevideouser.DO;
+package com.breeze.breezevideouser.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -43,6 +43,9 @@ public class Reviews implements Serializable {
 
     @ApiModelProperty("评论内容")
     private String content;
+
+    @ApiModelProperty("评论时ip地区")
+    private String ipArea;
 
 
 }

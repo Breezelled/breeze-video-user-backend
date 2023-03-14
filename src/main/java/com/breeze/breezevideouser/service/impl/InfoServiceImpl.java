@@ -1,6 +1,6 @@
 package com.breeze.breezevideouser.service.impl;
 
-import com.breeze.breezevideouser.DO.Info;
+import com.breeze.breezevideouser.domain.Info;
 import com.breeze.breezevideouser.mapper.InfoMapper;
 import com.breeze.breezevideouser.service.InfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

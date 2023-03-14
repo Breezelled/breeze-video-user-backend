@@ -1,16 +1,16 @@
 package com.breeze.breezevideouser.service;
 
-import com.breeze.breezevideouser.domain.S3;
+import com.breeze.breezevideouser.domain.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
- *  服务类
+ * 用户 服务类
  * </p>
  *
  * @author breeze
- * @since 2022-12-22
+ * @since 2023-03-14
  */
-public interface S3Service extends IService<S3> {
+public interface UserService extends IService<User> {
 
 }

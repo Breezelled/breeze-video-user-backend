@@ -3,7 +3,7 @@
 <mapper namespace="com.breeze.breezevideouser.mapper.InfoMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.breeze.breezevideouser.DO.Info">
+    <resultMap id="BaseResultMap" type="com.breeze.breezevideouser.domain.Info">
         <id column="id" property="id" />
         <result column="name" property="name" />
         <result column="runtime" property="runtime" />

@@ -1,6 +1,6 @@
 package com.breeze.breezevideouser.service;
 
-import com.breeze.breezevideouser.DO.Reviews;
+import com.breeze.breezevideouser.domain.Reviews;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

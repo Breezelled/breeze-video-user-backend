@@ -1,6 +1,6 @@
 package com.breeze.breezevideouser.mapper;
 
-import com.breeze.breezevideouser.DO.Info;
+import com.breeze.breezevideouser.domain.Info;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

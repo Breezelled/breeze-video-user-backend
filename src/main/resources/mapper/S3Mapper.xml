@@ -3,7 +3,7 @@
 <mapper namespace="com.breeze.breezevideouser.mapper.S3Mapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.breeze.breezevideouser.DO.S3">
+    <resultMap id="BaseResultMap" type="com.breeze.breezevideouser.domain.S3">
         <result column="bucket_name" property="bucketName" />
         <result column="object_name" property="objectName" />
         <result column="movie_id" property="movieId" />

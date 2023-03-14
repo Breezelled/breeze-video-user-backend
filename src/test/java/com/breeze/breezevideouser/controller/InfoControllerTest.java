@@ -6,15 +6,13 @@ import cn.hutool.core.text.csv.CsvReader;
 import cn.hutool.core.text.csv.CsvRow;
 import cn.hutool.core.text.csv.CsvUtil;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.breeze.breezevideouser.DO.Info;
+import com.breeze.breezevideouser.domain.Info;
 import com.breeze.breezevideouser.service.InfoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author breeze
@@ -51,4 +49,5 @@ class InfoControllerTest {
         }
         System.out.println(cnt);
     }
+
 }

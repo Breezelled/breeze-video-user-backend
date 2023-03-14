@@ -40,7 +40,7 @@ public class Generator {
                 })
                 .packageConfig(builder -> {
                     builder.parent("com.breeze.breezevideouser") // 设置父包名
-                            .entity("DO") // 实体输出到DO
+                            .entity("domain") // 实体输出到DO
                             .pathInfo(Collections.singletonMap(OutputFile.xml, resPath + "/mapper")); // 设置mapperXml生成路径
                 })
                 .strategyConfig(builder -> {

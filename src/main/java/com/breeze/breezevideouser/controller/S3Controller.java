@@ -5,6 +5,8 @@ import com.breeze.breezevideouser.common.ApiResponse;
 import com.breeze.breezevideouser.config.S3Config;
 import com.breeze.breezevideouser.log.annotation.WebLog;
 import com.breeze.breezevideouser.utils.S3Util;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +24,16 @@ import java.net.URL;
 import java.util.HashMap;
 
 /**
+ *
+ * <p>
+ * S3 前端控制器
+ * </p>
+ *
  * @author breeze
  * @date 2022/12/21 08:24
  */
 @RestController
+@Api(tags = "S3 前端控制器")
 @RequestMapping("/s3")
 public class S3Controller {
 
@@ -44,6 +52,7 @@ public class S3Controller {
             .credentialsProvider(StaticCredentialsProvider.create(awsBasicCredentials)).build();
 
     @WebLog(description = "S3上传文件")
+    @ApiOperation(value = "S3上传文件")
     @PostMapping
     public ApiResponse uploadFile(@RequestParam("file") MultipartFile multipartFile,
                                   @RequestParam("bucketName") String bucketName,
@@ -68,6 +77,7 @@ public class S3Controller {
     }
 
     @WebLog(description = "S3获取对象Url")
+    @ApiOperation(value = "S3获取对象Url")
     @GetMapping
     public ApiResponse getObjectByName(@RequestParam("bucketName") String bucketName,
                            @RequestParam("objectName") String objectName) {
@@ -77,6 +87,7 @@ public class S3Controller {
     }
 
     @WebLog(description = "S3获取对象Url")
+    @ApiOperation(value = "S3获取对象Url")
     @GetMapping("url")
     public ApiResponse getObjectUrl(@RequestParam("objectName") String objectName) {
         HashMap<Object, Object> map = new HashMap<>();

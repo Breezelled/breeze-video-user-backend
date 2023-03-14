@@ -1,4 +1,4 @@
-package com.breeze.breezevideouser.DO;
+package com.breeze.breezevideouser.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;

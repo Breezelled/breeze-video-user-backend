@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import springfox.documentation.oas.annotations.EnableOpenApi;
 
-@EnableOpenApi
 @ComponentScan(basePackages = {"com.breeze"})
 @MapperScan(basePackages = {"com.breeze.breezevideouser.mapper"})
 @SpringBootApplication

@@ -1,4 +1,4 @@
-package com.breeze.breezevideouser.DO;
+package com.breeze.breezevideouser.domain;
 
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
@@ -9,7 +9,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ * S3
  * </p>
  *
  * @author breeze
