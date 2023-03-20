@@ -1,7 +1,10 @@
 package com.breeze.breezevideouser.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.breeze.breezevideouser.domain.dto.UserDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -32,6 +35,9 @@ public class UserController {
     final Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @WebLog(description = "添加用户")
     @ApiOperation(value = "添加用户")
@@ -68,5 +74,5 @@ public class UserController {
     @RequestParam Integer pageSize) {
             return ApiResponse.ok(userService.page(new Page<>(pageNum, pageSize)));
     }
-
+    
 }

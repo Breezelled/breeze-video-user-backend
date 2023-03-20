@@ -1,4 +1,4 @@
-package com.breeze.breezevideouser.domain;
+package com.breeze.breezevideouser.domain.dto;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 用户
+ * 用户DTO
  * </p>
  *
  * @author breeze
@@ -19,13 +19,10 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-@ApiModel(value = "User对象", description = "用户")
-public class User implements Serializable {
+@ApiModel(value = "UserDto对象", description = "用户Dto")
+public class UserDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @ApiModelProperty("id")
-    private Integer id;
 
     @ApiModelProperty("用户名")
     private String username;
@@ -47,18 +44,6 @@ public class User implements Serializable {
 
     @ApiModelProperty("邮箱")
     private String email;
-
-    @ApiModelProperty("注册时间")
-    private LocalDateTime createTime;
-
-    @ApiModelProperty("最后登录时间")
-    private LocalDateTime lastLoginTime;
-
-    @ApiModelProperty("最后登录ip")
-    private String lastLoginIp;
-
-    @ApiModelProperty("最后登录区域")
-    private String lastLoginArea;
 
     @ApiModelProperty("头像地址")
     private String avatar;

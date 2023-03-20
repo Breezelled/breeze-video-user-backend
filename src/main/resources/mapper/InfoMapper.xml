@@ -29,4 +29,53 @@
         id, name, runtime, type, release_date, intro, director, writer, star, budget, revenue, language, company, country, rating, rating_num, tag, imdb_id
     </sql>
 
+    <select id="getAllBanner" resultType="com.breeze.breezevideouser.domain.vo.InfoVo">
+        SELECT
+            i.id,
+            i.name,
+            i.runtime,
+            i.type,
+            i.release_date,
+            i.intro,
+            i.director,
+            i.writer,
+            i.star,
+            i.budget,
+            i.revenue,
+            i.language,
+            i.company,
+            i.country,
+            i.rating,
+            i.rating_num,
+            i.tag,
+            i.imdb_id,
+            s3.movie_id,
+            MAX(CASE WHEN s3.object_name LIKE 'poster%' THEN s3.object_name ELSE NULL END) AS poster_url,
+            MAX(CASE WHEN s3.object_name LIKE 'trailer%' THEN s3.object_name ELSE NULL END) AS trailer_url
+        FROM
+            banner
+                INNER JOIN info i ON banner.movie_id = i.id
+                INNER JOIN s3 ON banner.movie_id = s3.movie_id
+        GROUP BY
+            i.id,
+            i.name,
+            i.runtime,
+            i.type,
+            i.release_date,
+            i.intro,
+            i.director,
+            i.writer,
+            i.star,
+            i.budget,
+            i.revenue,
+            i.language,
+            i.company,
+            i.country,
+            i.rating,
+            i.rating_num,
+            i.tag,
+            i.imdb_id,
+            s3.movie_id
+    </select>
+
 </mapper>

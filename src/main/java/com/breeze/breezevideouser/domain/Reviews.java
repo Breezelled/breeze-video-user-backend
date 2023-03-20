@@ -47,5 +47,11 @@ public class Reviews implements Serializable {
     @ApiModelProperty("评论时ip地区")
     private String ipArea;
 
+    @ApiModelProperty("用户评分")
+    private String userRating;
+
+    @ApiModelProperty("情感分析评分")
+    private String sentimentRating;
+
 
 }
