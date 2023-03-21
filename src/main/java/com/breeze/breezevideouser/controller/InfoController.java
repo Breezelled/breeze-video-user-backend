@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,13 +44,15 @@ public class InfoController {
     @WebLog(description = "添加电影信息")
     @ApiOperation(value = "添加电影信息")
     @PostMapping
+    @CacheEvict(value = "topRated", key = "'topRated.json'")
     public ApiResponse save(@RequestBody Info info) {
-            return ApiResponse.ok(infoService.saveOrUpdate(info));
+            return ApiResponse.ok(infoService.save(info));
             }
 
     @WebLog(description = "用id删除电影信息")
     @ApiOperation(value = "用id删除电影信息")
     @DeleteMapping("/{id}")
+    @CacheEvict(value = "topRated", key = "'topRated.json'")
     public ApiResponse delete(@PathVariable Integer id) {
             return ApiResponse.ok(infoService.removeById(id));
             }
@@ -79,7 +82,7 @@ public class InfoController {
     @WebLog(description = "电影评分最高的前x个")
     @ApiOperation(value = "电影评分最高的前x个")
     @GetMapping("/rating")
-    public ApiResponse findPage(@RequestParam Integer topN) {
+    public ApiResponse findRating(@RequestParam Integer topN) {
         QueryWrapper<Info> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderByDesc("rating");
         queryWrapper.last("limit " + topN);
@@ -123,5 +126,19 @@ public class InfoController {
         queryWrapper.like("type", type);
         queryWrapper.orderByDesc("rating");
         return ApiResponse.ok(infoService.page(new Page<>(pageNum, pageSize), queryWrapper));
+    }
+
+    @WebLog(description = "最新发布的电影评分最高的前100个")
+    @ApiOperation(value = "最新发布的电影评分最高的前100个")
+    @GetMapping("/topRated")
+    public ApiResponse topRated() {
+        return ApiResponse.ok(infoService.topRated());
+    }
+
+    @WebLog(description = "查询评分最高的特定类型的影片，评分相同按评分数排名")
+    @ApiOperation(value = "查询评分最高的特定类型的影片，评分相同按评分数排名")
+    @GetMapping("/topRatedAndNumByType/{type}")
+    public ApiResponse topRatedAndNumByType(@PathVariable String type) {
+        return ApiResponse.ok(infoService.topRatedAndNumByType(type));
     }
 }

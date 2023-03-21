@@ -40,7 +40,7 @@ public class RedisConfig extends CachingConfigurerSupport {
         Map<String, RedisCacheConfiguration> configurationMap = new HashMap<>();
 
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofMinutes(5))
+                .entryTtl(Duration.ofHours(1))
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(keySerializer()))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(valueSerializer()))
                 .disableCachingNullValues();

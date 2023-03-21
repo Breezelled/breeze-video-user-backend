@@ -29,6 +29,57 @@
         id, name, runtime, type, release_date, intro, director, writer, star, budget, revenue, language, company, country, rating, rating_num, tag, imdb_id
     </sql>
 
+    <sql id="infoVo_Select_List">
+        SELECT
+            info.id,
+            NAME,
+            runtime,
+            TYPE,
+            release_date,
+            intro,
+            director,
+            writer,
+            star,
+            budget,
+            revenue,
+            LANGUAGE,
+            company,
+            country,
+            rating,
+            rating_num,
+            tag,
+            imdb_id,
+            MAX ( CASE WHEN s3.object_name LIKE'poster%' THEN s3.object_name ELSE NULL END ) AS poster_url,
+            MAX ( CASE WHEN s3.object_name LIKE'trailer%' THEN s3.object_name ELSE NULL END ) AS trailer_url
+        FROM
+            info
+            INNER JOIN s3 ON info.ID = s3.movie_id
+        WHERE
+            ID IN
+    </sql>
+
+    <sql id="infoVo_GroupBy_List">
+        GROUP BY
+            info.ID,
+            NAME,
+            runtime,
+            TYPE,
+            release_date,
+            intro,
+            director,
+            writer,
+            star,
+            budget,
+            revenue,
+            LANGUAGE,
+            company,
+            country,
+            rating,
+            rating_num,
+            tag,
+            imdb_id
+    </sql>
+
     <select id="getAllBanner" resultType="com.breeze.breezevideouser.domain.vo.InfoVo">
         SELECT
             i.id,
@@ -77,5 +128,50 @@
             i.imdb_id,
             s3.movie_id
     </select>
+    
+    <select id="topRated" resultType="com.breeze.breezevideouser.domain.vo.InfoVo">
+         <include refid="infoVo_Select_List"/> (
+            SELECT ID
+            FROM
+            info
+            WHERE
+            release_date IS NOT NULL AND rating > '7.0/10'
+            ORDER BY
+            CASE
+            WHEN release_date ~ E'^\\d{4}.*' THEN
+            to_date( release_date, 'YYYY' )
+            WHEN release_date ~ E'^\\w+ \\d{1,2}, \\d{4} \\(.*\\)$' THEN
+            to_date( regexp_replace( release_date, E'\\s*\\([^)]*\\)\\s*$', '' ), 'Month DD, YYYY' )
+            WHEN release_date ~ E'^\\w+ \\d{4} \\(.*\\)$' THEN
+            to_date( regexp_replace( release_date, E'\\s*\\([^)]*\\)\\s*$', '' ), 'Month YYYY' ) ELSE to_date( release_date, 'YYYY' )
+            END DESC
+            LIMIT 100
+            )
+            <include refid="infoVo_GroupBy_List"/>
+        ORDER BY
+            rating DESC
+    </select>
+
+    <select id="topRatedAndNumByType" resultType="com.breeze.breezevideouser.domain.vo.InfoVo"
+            parameterType="string">
+        <include refid="infoVo_Select_List"/> (
+        SELECT ID
+        FROM
+        info
+        WHERE
+        TYPE ILIKE CONCAT('%', #{type}, '%')
+        ORDER BY
+        rating DESC,
+        CASE
+
+        WHEN RIGHT ( rating_num, 1 ) = 'M' THEN
+        ( SUBSTRING ( rating_num, 1, LENGTH ( rating_num ) - 1 ) :: NUMERIC * 1000000 ) ELSE ( SUBSTRING ( rating_num, 1, LENGTH ( rating_num ) - 1 ) :: NUMERIC * 1000 )
+        END DESC
+        LIMIT 100
+        )
+        <include refid="infoVo_GroupBy_List"/>
+        ORDER BY rating DESC
+    </select>
+
 
 </mapper>

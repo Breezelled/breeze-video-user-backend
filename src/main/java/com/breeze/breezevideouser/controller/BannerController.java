@@ -55,8 +55,6 @@ public class BannerController {
     public ApiResponse save(@RequestBody BannerDto bannerDto) {
         Banner banner = new Banner();
         modelMapper.map(bannerDto, banner);
-        int cnt = (int) bannerService.count();
-        banner.setId(cnt + 1);
         return ApiResponse.ok(bannerService.save(banner));
     }
 
@@ -72,9 +70,7 @@ public class BannerController {
     @ApiOperation(value = "返回所有Banner")
     @GetMapping
     public ApiResponse findAll() {
-        List<InfoVo> banners = bannerService.getAllBanner();
-        return ApiResponse.ok(banners);
-
+        return ApiResponse.ok(bannerService.getAllBanner());
     }
 
     @WebLog(description = "用id查找Banner")
@@ -82,7 +78,7 @@ public class BannerController {
     @GetMapping("/{id}")
     public ApiResponse findOne(@PathVariable Integer id) {
             return ApiResponse.ok(bannerService.getById(id));
-            }
+    }
 
     @WebLog(description = "分页Banner")
     @ApiOperation(value = "分页Banner")

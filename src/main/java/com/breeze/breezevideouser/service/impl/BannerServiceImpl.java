@@ -32,16 +32,7 @@ import java.util.stream.Collectors;
 public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> implements BannerService {
 
     @Autowired
-    private BannerMapper bannerMapper;
-
-    @Autowired
     private InfoMapper infoMapper;
-
-    @Autowired
-    private S3Mapper s3Mapper;
-
-    @Autowired
-    private ModelMapper modelMapper;
 
     @Cacheable(value = "banner", key = "'banner.json'")
     @Override
