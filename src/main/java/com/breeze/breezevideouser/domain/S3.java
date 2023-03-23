@@ -32,5 +32,7 @@ public class S3 implements Serializable {
     @ApiModelProperty("电影id")
     private Integer movieId;
 
+    @ApiModelProperty("登录页面图像id")
+    private Integer loginImageId;
 
 }

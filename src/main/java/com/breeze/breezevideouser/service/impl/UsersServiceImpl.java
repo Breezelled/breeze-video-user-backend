@@ -1,8 +1,8 @@
 package com.breeze.breezevideouser.service.impl;
 
-import com.breeze.breezevideouser.domain.User;
-import com.breeze.breezevideouser.mapper.UserMapper;
-import com.breeze.breezevideouser.service.UserService;
+import com.breeze.breezevideouser.domain.Users;
+import com.breeze.breezevideouser.mapper.UsersMapper;
+import com.breeze.breezevideouser.service.UsersService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2023-03-14
  */
 @Service
-public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements UsersService {
 
 }

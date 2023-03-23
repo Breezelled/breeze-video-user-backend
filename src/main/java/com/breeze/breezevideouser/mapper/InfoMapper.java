@@ -26,14 +26,14 @@ public interface InfoMapper extends BaseMapper<Info> {
 
     /**
      * 查询最新release的且rating>7.0
-     * @return 100个影片
+     * @return 25个影片
      */
     List<InfoVo> topRated();
 
     /**
      * 查询评分最高的特定类型的影片，评分相同按评分数排名
      * @param type 类型
-     * @return 100个影片
+     * @return 25个影片
      */
     List<InfoVo> topRatedAndNumByType(@Param("type") String type);
 

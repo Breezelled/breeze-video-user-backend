@@ -34,9 +34,16 @@ public class ApiResponse implements Serializable {
     public static ApiResponse ok(Object data) {
         return new ApiResponse(0, "", data);
     }
+    public static ApiResponse ok(Integer code, String errorMsg, Object data) {
+        return new ApiResponse(code, errorMsg, data);
+    }
 
     public static ApiResponse error(String errorMsg) {
         return new ApiResponse(0, errorMsg, new HashMap<>());
+    }
+
+    public static ApiResponse error(Integer code, String errorMsg) {
+        return new ApiResponse(code, errorMsg, new HashMap<>());
     }
 
     public static ApiResponse ok(String errorMsg, Object data) {

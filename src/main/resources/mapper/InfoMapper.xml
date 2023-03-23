@@ -145,7 +145,7 @@
             WHEN release_date ~ E'^\\w+ \\d{4} \\(.*\\)$' THEN
             to_date( regexp_replace( release_date, E'\\s*\\([^)]*\\)\\s*$', '' ), 'Month YYYY' ) ELSE to_date( release_date, 'YYYY' )
             END DESC
-            LIMIT 100
+            LIMIT 25
             )
             <include refid="infoVo_GroupBy_List"/>
         ORDER BY
@@ -167,7 +167,7 @@
         WHEN RIGHT ( rating_num, 1 ) = 'M' THEN
         ( SUBSTRING ( rating_num, 1, LENGTH ( rating_num ) - 1 ) :: NUMERIC * 1000000 ) ELSE ( SUBSTRING ( rating_num, 1, LENGTH ( rating_num ) - 1 ) :: NUMERIC * 1000 )
         END DESC
-        LIMIT 100
+        LIMIT 25
         )
         <include refid="infoVo_GroupBy_List"/>
         ORDER BY rating DESC

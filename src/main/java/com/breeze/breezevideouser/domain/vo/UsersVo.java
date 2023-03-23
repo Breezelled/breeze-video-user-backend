@@ -1,10 +1,7 @@
-package com.breeze.breezevideouser.domain;
+package com.breeze.breezevideouser.domain.vo;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -13,7 +10,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 用户
+ * 用户DTO
  * </p>
  *
  * @author breeze
@@ -22,20 +19,13 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-@ApiModel(value = "User对象", description = "用户")
-public class User implements Serializable {
+@ApiModel(value = "UsersVo对象", description = "用户Vo")
+public class UsersVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("id")
-    @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
-
     @ApiModelProperty("用户名")
     private String username;
-
-    @ApiModelProperty("密码")
-    private String password;
 
     @ApiModelProperty("手机号")
     private String phone;
@@ -54,12 +44,6 @@ public class User implements Serializable {
 
     @ApiModelProperty("注册时间")
     private LocalDateTime createTime;
-
-    @ApiModelProperty("最后登录时间")
-    private LocalDateTime lastLoginTime;
-
-    @ApiModelProperty("最后登录ip")
-    private String lastLoginIp;
 
     @ApiModelProperty("最后登录区域")
     private String lastLoginArea;

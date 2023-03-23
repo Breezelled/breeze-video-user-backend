@@ -12,5 +12,4 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2022-12-22
  */
 public interface S3Mapper extends BaseMapper<S3> {
-
 }

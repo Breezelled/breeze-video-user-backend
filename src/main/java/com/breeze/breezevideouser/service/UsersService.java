@@ -1,6 +1,6 @@
 package com.breeze.breezevideouser.service;
 
-import com.breeze.breezevideouser.domain.User;
+import com.breeze.breezevideouser.domain.Users;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author breeze
  * @since 2023-03-14
  */
-public interface UserService extends IService<User> {
+public interface UsersService extends IService<Users> {
 
 }
