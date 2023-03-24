@@ -3,9 +3,13 @@ package com.breeze.breezevideouser.controller;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.breeze.breezevideouser.domain.dto.UsersLoginDto;
+import com.breeze.breezevideouser.utils.IPUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.lionsoul.ip2region.xdb.Searcher;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +24,8 @@ import com.breeze.breezevideouser.log.annotation.WebLog;
 import com.breeze.breezevideouser.service.UsersService;
 import com.breeze.breezevideouser.domain.Users;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 /**
@@ -42,6 +48,9 @@ public class UsersController {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private Searcher searcher;
+
     @WebLog(description = "注册")
     @ApiOperation(value = "注册")
     @PostMapping
@@ -61,23 +70,37 @@ public class UsersController {
         return ApiResponse.ok(200, "Sign up success!", usersService.save(user));
     }
 
-    /**
-     * TODO not finish
-     */
     @WebLog(description = "登录")
     @ApiOperation(value = "登录")
     @PostMapping("/login")
-    public ApiResponse login(@RequestBody UsersLoginDto userLoginDto) {
+    public ApiResponse login(@RequestBody UsersLoginDto userLoginDto, HttpServletRequest request) {
         Users user = modelMapper.map(userLoginDto, Users.class);
         QueryWrapper<Users> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("email", user.getEmail()).eq("password", SecureUtil.sha256(user.getPassword()));
 
-        if (!ObjectUtil.isNull(usersService.getOne(queryWrapper))) {
+        Users users = usersService.getOne(queryWrapper);
+        if (ObjectUtil.isNull(users)) {
             return ApiResponse.error(404, "Received wrong email or password.");
         }
 
-        user.setLastLoginTime(LocalDateTime.now());
-        return ApiResponse.ok(200, "Sign in success!", usersService.save(user));
+        UpdateWrapper<Users> updateWrapper = new UpdateWrapper<>();
+
+        String ip = IPUtil.getIp(request);
+        updateWrapper.set("last_login_ip", ip);
+        try {
+            if (searcher != null) {
+                String region = searcher.search(ip);
+                if (StringUtils.isNotEmpty(region)) {
+                    updateWrapper.set("last_login_area", region);
+                }
+            }
+        } catch (Exception ignored) {
+
+        }
+        updateWrapper.setEntity(users);
+        updateWrapper.set("last_login_time", LocalDateTime.now());
+
+        return ApiResponse.ok(200, "Sign in success!", usersService.update(updateWrapper));
     }
 
     @WebLog(description = "用id删除用户")

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.breeze.breezevideouser.mapper.LoginImageMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.breeze.breezevideouser.domain.LoginImage">
+        <id column="id" property="id" />
+        <result column="current_choice" property="currentChoice" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, current_choice
+    </sql>
+
+    <select id="getCurrentLoginImage" resultType="string">
+        SELECT object_name as login_image_url
+        FROM s3 JOIN login_image ON s3.login_image_id = login_image.id
+        WHERE current_choice = TRUE
+    </select>
+</mapper>

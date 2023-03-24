@@ -9,7 +9,6 @@ import java.net.UnknownHostException;
  * @date 2023/3/15 09:54
  */
 public class IPUtil {
-
     private static final String[] IP_HEADERS = {"X-Real-IP", "X-Forwarded-For", "Proxy-Client-IP", "WL-Proxy-Client-IP"};
     private static final String LOCAL_HOST = "127.0.0.1";
 
