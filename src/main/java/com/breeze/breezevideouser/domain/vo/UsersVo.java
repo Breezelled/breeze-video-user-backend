@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 用户DTO
+ * 用户VO
  * </p>
  *
  * @author breeze

@@ -3,6 +3,7 @@ package com.breeze.breezevideouser.mapper;
 import com.breeze.breezevideouser.domain.Info;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.breeze.breezevideouser.domain.vo.InfoVo;
+import com.breeze.breezevideouser.domain.vo.TypeVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -25,16 +26,24 @@ public interface InfoMapper extends BaseMapper<Info> {
     List<InfoVo> getAllBanner();
 
     /**
-     * 查询最新release的且rating>7.0
+     * 查询最新release的且rating>7.0 且都有海报和预告片的
      * @return 25个影片
      */
     List<InfoVo> topRated();
 
     /**
-     * 查询评分最高的特定类型的影片，评分相同按评分数排名
+     * 查询评分最高的特定类型的影片，评分相同按评分数排名 且都有海报和预告片的
      * @param type 类型
+     * @param limit 返回个数
      * @return 25个影片
      */
-    List<InfoVo> topRatedAndNumByType(@Param("type") String type);
+    List<InfoVo> topRatedAndNumByType(@Param("type") String type, @Param("limit") Integer limit);
+
+    /**
+     * 将每个电影type分割后按type数最多的排序
+     * @param countLimit 最小count值
+     * @return 所有的type个数信息
+     */
+    List<TypeVo> topNumType(@Param("countLimit") Integer countLimit);
 
 }

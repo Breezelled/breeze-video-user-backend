@@ -137,8 +137,15 @@ public class InfoController {
 
     @WebLog(description = "查询评分最高的特定类型的影片，评分相同按评分数排名")
     @ApiOperation(value = "查询评分最高的特定类型的影片，评分相同按评分数排名")
-    @GetMapping("/topRatedAndNumByType/{type}")
-    public ApiResponse topRatedAndNumByType(@PathVariable String type) {
-        return ApiResponse.ok(infoService.topRatedAndNumByType(type));
+    @GetMapping("/topRatedAndNumByType/{type}/{limit}")
+    public ApiResponse topRatedAndNumByType(@PathVariable String type, @PathVariable Integer limit) {
+        return ApiResponse.ok(infoService.topRatedAndNumByType(type, limit));
+    }
+
+    @WebLog(description = "查询type数最多的排名")
+    @ApiOperation(value = "查询type数最多的排名")
+    @GetMapping("/topNumType/{countLimit}")
+    public ApiResponse topNumType(@PathVariable Integer countLimit) {
+        return ApiResponse.ok(infoService.topNumType(countLimit));
     }
 }

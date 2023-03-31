@@ -1,6 +1,7 @@
 package com.breeze.breezevideouser.log.aspect;
 
 import cn.hutool.json.JSONUtil;
+import com.breeze.breezevideouser.utils.IPUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -58,7 +59,7 @@ public class WebLogAspect { private final static Logger logger = LoggerFactory.g
         // 打印调用 controller 的全路径以及执行方法
         logger.info("Class Method : {}.{}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
         // 打印请求的 IP
-        logger.info("IP : {}", request.getRemoteAddr());
+        logger.info("IP : {}", IPUtil.getIp(request));
         // 打印请求入参
         logger.info("Request Args : {}", JSONUtil.toJsonStr(joinPoint.getArgs().clone()));
     }

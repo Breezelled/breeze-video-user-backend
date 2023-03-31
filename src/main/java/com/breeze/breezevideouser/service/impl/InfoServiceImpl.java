@@ -2,6 +2,7 @@ package com.breeze.breezevideouser.service.impl;
 
 import com.breeze.breezevideouser.domain.Info;
 import com.breeze.breezevideouser.domain.vo.InfoVo;
+import com.breeze.breezevideouser.domain.vo.TypeVo;
 import com.breeze.breezevideouser.mapper.InfoMapper;
 import com.breeze.breezevideouser.service.InfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -32,7 +33,19 @@ public class InfoServiceImpl extends ServiceImpl<InfoMapper, Info> implements In
     }
 
     @Override
-    public List<InfoVo> topRatedAndNumByType(String type) {
-        return infoMapper.topRatedAndNumByType(type);
+    public List<InfoVo> topRatedAndNumByType(String type, Integer limit) {
+        return infoMapper.topRatedAndNumByType(type, limit);
+    }
+
+    @Cacheable(value = "topNumType", key = "'topNumType.json'")
+    @Override
+    public List<TypeVo> topNumType(Integer countLimit) {
+        List<TypeVo> list = infoMapper.topNumType(countLimit);
+        for (TypeVo t:list) {
+            List<InfoVo> temp = infoMapper.topRatedAndNumByType(t.getType(), 1);
+            t.setPosterUrl(temp.get(0).getPosterUrl());
+            t.setName(temp.get(0).getName());
+        }
+        return list;
     }
 }

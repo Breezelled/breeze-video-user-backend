@@ -58,7 +58,7 @@
             ID IN
     </sql>
 
-    <sql id="infoVo_GroupBy_List">
+    <sql id="infoVo_GroupBy_Having_List">
         GROUP BY
             info.ID,
             NAME,
@@ -78,6 +78,9 @@
             rating_num,
             tag,
             imdb_id
+            HAVING
+            MAX(CASE WHEN s3.object_name LIKE 'poster%' THEN s3.object_name ELSE NULL END) IS NOT NULL
+            AND MAX(CASE WHEN s3.object_name LIKE 'trailer%' THEN s3.object_name ELSE NULL END) IS NOT NULL
     </sql>
 
     <select id="getAllBanner" resultType="com.breeze.breezevideouser.domain.vo.InfoVo">
@@ -136,41 +139,50 @@
             info
             WHERE
             release_date IS NOT NULL AND rating > '7.0/10'
+            )
+            <include refid="infoVo_GroupBy_Having_List"/>
             ORDER BY
             CASE
-            WHEN release_date ~ E'^\\d{4}.*' THEN
-            to_date( release_date, 'YYYY' )
-            WHEN release_date ~ E'^\\w+ \\d{1,2}, \\d{4} \\(.*\\)$' THEN
-            to_date( regexp_replace( release_date, E'\\s*\\([^)]*\\)\\s*$', '' ), 'Month DD, YYYY' )
-            WHEN release_date ~ E'^\\w+ \\d{4} \\(.*\\)$' THEN
-            to_date( regexp_replace( release_date, E'\\s*\\([^)]*\\)\\s*$', '' ), 'Month YYYY' ) ELSE to_date( release_date, 'YYYY' )
+                WHEN release_date ~ E'^\\d{4}.*' THEN
+                to_date( release_date, 'YYYY' )
+                WHEN release_date ~ E'^\\w+ \\d{1,2}, \\d{4} \\(.*\\)$' THEN
+                to_date( regexp_replace( release_date, E'\\s*\\([^)]*\\)\\s*$', '' ), 'Month DD, YYYY' )
+                WHEN release_date ~ E'^\\w+ \\d{4} \\(.*\\)$' THEN
+                to_date( regexp_replace( release_date, E'\\s*\\([^)]*\\)\\s*$', '' ), 'Month YYYY' ) ELSE to_date( release_date, 'YYYY' )
             END DESC
             LIMIT 25
-            )
-            <include refid="infoVo_GroupBy_List"/>
-        ORDER BY
-            rating DESC
     </select>
 
-    <select id="topRatedAndNumByType" resultType="com.breeze.breezevideouser.domain.vo.InfoVo"
-            parameterType="string">
+    <sql id="orderBy_RatingNum_Rating">
+        ORDER BY
+        rating DESC,
+        CASE
+        WHEN RIGHT ( rating_num, 1 ) = 'M' THEN
+        ( SUBSTRING ( rating_num, 1, LENGTH ( rating_num ) - 1 ) :: NUMERIC * 1000000 ) ELSE ( SUBSTRING ( rating_num, 1, LENGTH ( rating_num ) - 1 ) :: NUMERIC * 1000 )
+        END DESC
+    </sql>
+
+    <select id="topRatedAndNumByType" resultType="com.breeze.breezevideouser.domain.vo.InfoVo">
         <include refid="infoVo_Select_List"/> (
         SELECT ID
         FROM
         info
         WHERE
         TYPE ILIKE CONCAT('%', #{type}, '%')
-        ORDER BY
-        rating DESC,
-        CASE
-
-        WHEN RIGHT ( rating_num, 1 ) = 'M' THEN
-        ( SUBSTRING ( rating_num, 1, LENGTH ( rating_num ) - 1 ) :: NUMERIC * 1000000 ) ELSE ( SUBSTRING ( rating_num, 1, LENGTH ( rating_num ) - 1 ) :: NUMERIC * 1000 )
-        END DESC
-        LIMIT 25
+        <include refid="orderBy_RatingNum_Rating"/>
         )
-        <include refid="infoVo_GroupBy_List"/>
-        ORDER BY rating DESC
+        <include refid="infoVo_GroupBy_Having_List"/>
+        <include refid="orderBy_RatingNum_Rating"/>
+        LIMIT #{limit}
+    </select>
+
+    <select id="topNumType" resultType="com.breeze.breezevideouser.domain.vo.TypeVo">
+        SELECT TYPE, COUNT ( TYPE ) AS type_count
+        FROM
+            ( SELECT info.ID, regexp_split_to_table( info.TYPE, E'\\|' ) AS TYPE FROM info ) T
+        GROUP BY TYPE
+        HAVING COUNT ( TYPE ) > #{countLimit}
+        ORDER BY COUNT ( TYPE ) DESC
     </select>
 
 

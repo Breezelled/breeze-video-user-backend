@@ -2,6 +2,8 @@ package com.breeze.breezevideouser.domain.dto;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -10,24 +12,23 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- *  BannerDTO
+ * 影片类型DTO
  * </p>
  *
  * @author breeze
- * @since 2023-03-20
+ * @since 2023-03-31
  */
 @Getter
 @Setter
 @Accessors(chain = true)
-@ApiModel(value = "BannerDto对象", description = "BannerDto")
-public class BannerDto implements Serializable {
+@ApiModel(value = "TypeDto对象", description = "保存用户Interest Type Dto")
+public class TypeDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("电影id")
-    private Integer movieId;
+    @ApiModelProperty("用户兴趣类型名")
+    private List<String> types;
 
-    @ApiModelProperty("banner到期时间")
-    private LocalDateTime expireTime;
-
+    @ApiModelProperty("用户邮箱")
+    private String email;
 }

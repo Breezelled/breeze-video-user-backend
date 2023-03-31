@@ -12,7 +12,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 电影信息
+ * 电影信息VO
  * </p>
  *
  * @author breeze
