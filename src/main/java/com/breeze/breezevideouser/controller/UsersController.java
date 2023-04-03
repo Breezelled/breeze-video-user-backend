@@ -27,9 +27,7 @@ import com.breeze.breezevideouser.service.UsersService;
 import com.breeze.breezevideouser.domain.Users;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * <p>
@@ -53,61 +51,6 @@ public class UsersController {
 
     @Autowired
     private Searcher searcher;
-
-    @WebLog(description = "注册")
-    @ApiOperation(value = "注册")
-    @PostMapping
-    public ApiResponse save(@RequestBody UsersLoginDto userLoginDto) {
-        Users user = modelMapper.map(userLoginDto, Users.class);
-        String email = user.getEmail();
-        QueryWrapper<Users> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("email", email);
-
-        if (!ObjectUtil.isNull(usersService.getOne(queryWrapper))) {
-            return ApiResponse.error(406, "This email is used already.");
-        }
-
-        String secretPwd = SecureUtil.sha256(user.getPassword());
-        user.setPassword(secretPwd);
-        user.setCreateTime(LocalDateTime.now());
-        return ApiResponse.ok(200, "Sign up success!", usersService.save(user));
-    }
-
-    @WebLog(description = "登录")
-    @ApiOperation(value = "登录")
-    @PostMapping("/login")
-    public ApiResponse login(@RequestBody UsersLoginDto userLoginDto, HttpServletRequest request) {
-        Users user = modelMapper.map(userLoginDto, Users.class);
-        QueryWrapper<Users> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("email", user.getEmail()).eq("password", SecureUtil.sha256(user.getPassword()));
-
-        Users users = usersService.getOne(queryWrapper);
-        if (ObjectUtil.isNull(users)) {
-            return ApiResponse.error(404, "Received wrong email or password.");
-        }
-
-        UpdateWrapper<Users> updateWrapper = new UpdateWrapper<>();
-
-        String ip = IPUtil.getIp(request);
-        updateWrapper.set("last_login_ip", ip);
-        try {
-            if (searcher != null) {
-                String region = searcher.search(ip);
-                if (StringUtils.isNotEmpty(region)) {
-                    updateWrapper.set("last_login_area", region);
-                    users.setLastLoginArea(region);
-                }
-            }
-        } catch (Exception ignored) {
-
-        }
-        updateWrapper.setEntity(users);
-        updateWrapper.set("last_login_time", LocalDateTime.now());
-        usersService.update(updateWrapper);
-
-        UsersVo usersVo = modelMapper.map(users, UsersVo.class);
-        return ApiResponse.ok(200, "Sign in success!", usersVo);
-    }
 
     @WebLog(description = "用id删除用户")
     @ApiOperation(value = "用id删除用户")

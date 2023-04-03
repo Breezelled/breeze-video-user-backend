@@ -2,6 +2,7 @@ package com.breeze.breezevideouser.service;
 
 import com.breeze.breezevideouser.domain.Users;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
  * <p>
@@ -11,6 +12,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author breeze
  * @since 2023-03-14
  */
-public interface UsersService extends IService<Users> {
+public interface UsersService extends IService<Users>, UserDetailsService {
 
 }

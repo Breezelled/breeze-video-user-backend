@@ -2,14 +2,17 @@ package com.breeze.breezevideouser.domain;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Collections;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * <p>
@@ -21,9 +24,11 @@ import lombok.experimental.Accessors;
  */
 @Getter
 @Setter
+@NoArgsConstructor
+@RequiredArgsConstructor
 @Accessors(chain = true)
 @ApiModel(value = "Users对象", description = "用户")
-public class Users implements Serializable {
+public class Users implements Serializable, UserDetails {
 
     private static final long serialVersionUID = 1L;
 
@@ -34,6 +39,7 @@ public class Users implements Serializable {
     @ApiModelProperty("用户名")
     private String username;
 
+    @NonNull
     @ApiModelProperty("密码")
     private String password;
 
@@ -49,6 +55,7 @@ public class Users implements Serializable {
     @ApiModelProperty("性别")
     private String gender;
 
+    @NonNull
     @ApiModelProperty("邮箱")
     private String email;
 
@@ -70,5 +77,32 @@ public class Users implements Serializable {
     @ApiModelProperty("兴趣类型")
     private String interestType;
 
+    @ApiModelProperty("uuid")
+    private String userid;
 
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.EMPTY_LIST;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
