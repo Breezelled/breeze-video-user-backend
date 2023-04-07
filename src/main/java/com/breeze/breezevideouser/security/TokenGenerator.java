@@ -37,7 +37,7 @@ public class TokenGenerator {
         JwtClaimsSet claimsSet = JwtClaimsSet.builder()
                 .issuer("breeze-video")
                 .issuedAt(now)
-                .expiresAt(now.plus(30, ChronoUnit.MINUTES))
+                .expiresAt(now.plus(60, ChronoUnit.MINUTES))
                 .subject(user.getUserid())
                 .build();
 

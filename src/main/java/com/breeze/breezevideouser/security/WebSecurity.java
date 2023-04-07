@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -53,6 +54,11 @@ public class WebSecurity {
         http
                 .authorizeHttpRequests((authorize) -> authorize
                         .antMatchers("/auth/*").permitAll() // 放行auth
+                        .antMatchers(HttpMethod.GET, "/banner").permitAll() // 放行SSR
+                        .antMatchers(HttpMethod.GET, "/s3/**").permitAll() // 放行对象存储
+                        .antMatchers(HttpMethod.GET,"/info/topRated").permitAll()
+                        .antMatchers(HttpMethod.GET,"/info/topNumType/*").permitAll()
+                        .antMatchers(HttpMethod.GET,"/loginImage/login").permitAll()
                         .anyRequest().authenticated()) // 验证其他任何请求
                 .csrf().disable()
                 .cors().disable()

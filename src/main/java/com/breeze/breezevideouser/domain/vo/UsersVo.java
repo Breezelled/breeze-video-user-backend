@@ -54,5 +54,12 @@ public class UsersVo implements Serializable {
     @ApiModelProperty("兴趣类型")
     private String interestType;
 
+    @ApiModelProperty("用户uuid")
+    private String userid;
 
+    @ApiModelProperty("访问令牌")
+    private String accessToken;
+
+    @ApiModelProperty("刷新令牌")
+    private String refreshToken;
 }

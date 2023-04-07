@@ -46,12 +46,6 @@ public class UsersController {
     @Autowired
     private UsersService usersService;
 
-    @Autowired
-    private ModelMapper modelMapper;
-
-    @Autowired
-    private Searcher searcher;
-
     @WebLog(description = "用id删除用户")
     @ApiOperation(value = "用id删除用户")
     @DeleteMapping("/{id}")
@@ -93,7 +87,8 @@ public class UsersController {
         sb.deleteCharAt(sb.length()-1);
         updateWrapper.set("interest_type", sb.toString());
         updateWrapper.setEntity(users);
-        return ApiResponse.ok(usersService.update(updateWrapper));
+        usersService.update(updateWrapper);
+        return ApiResponse.ok(sb.toString());
     }
     
 }

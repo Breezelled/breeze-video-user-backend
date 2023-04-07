@@ -1,5 +1,6 @@
 package com.breeze.breezevideouser.domain.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,13 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TokenDto {
+
+    @ApiModelProperty("用户uuid")
     private String userid;
+
+    @ApiModelProperty("访问令牌")
     private String accessToken;
+
+    @ApiModelProperty("刷新令牌")
     private String refreshToken;
 }
