@@ -1,8 +1,7 @@
 package com.breeze.breezevideouser.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.breeze.breezevideouser.domain.Info;
-import com.breeze.breezevideouser.domain.dto.FavoritesDto;
+import com.breeze.breezevideouser.domain.dto.FavoritesLikesDto;
 import com.breeze.breezevideouser.service.InfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -65,10 +63,10 @@ public class FavoritesController {
     @WebLog(description = "用id删除收藏")
     @ApiOperation(value = "用id删除收藏")
     @DeleteMapping()
-    public ApiResponse deleteByUser(@RequestBody FavoritesDto favoritesDto) {
+    public ApiResponse deleteByUser(@RequestBody FavoritesLikesDto favoritesLikesDto) {
         Map<String, Object> map = new ConcurrentHashMap<>();
-        map.put("movie_id", favoritesDto.getMovieId());
-        map.put("user_id", favoritesDto.getUserId());
+        map.put("movie_id", favoritesLikesDto.getMovieId());
+        map.put("user_id", favoritesLikesDto.getUserId());
         return ApiResponse.ok(favoritesService.removeByMap(map));
     }
 
@@ -97,15 +95,19 @@ public class FavoritesController {
     @WebLog(description = "根据用户查找其收藏")
     @ApiOperation(value = "根据用户查找其收藏")
     @PostMapping("/user")
-    public ApiResponse userFavorites(@RequestBody FavoritesDto favoritesDto) {
+    public ApiResponse userFavorites(@RequestBody FavoritesLikesDto favoritesLikesDto) {
         QueryWrapper<Favorites> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_id", favoritesDto.getUserId());
+        queryWrapper.eq("user_id", favoritesLikesDto.getUserId());
+        queryWrapper.orderByDesc("favorite_time");
         List<Favorites> list = favoritesService.list(queryWrapper);
         List<Integer> ids = new ArrayList<>();
         for (Favorites f: list) {
             ids.add(f.getMovieId());
         }
-        return ApiResponse.ok(infoService.listByIds(ids));
+        if (!ids.isEmpty()){
+            return ApiResponse.ok(infoService.listByIds(ids));
+        }
+        return ApiResponse.ok(new ArrayList<>());
     }
 
 }
