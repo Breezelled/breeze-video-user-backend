@@ -1,4 +1,4 @@
-package com.breeze.breezevideouser.domain;
+package com.breeze.breezevideouser.domain.dto;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -13,17 +13,17 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author breeze
- * @since 2023-03-20
+ * @since 2023-04-18
  */
 @Getter
 @Setter
 @Accessors(chain = true)
-@ApiModel(value = "Favorites对象", description = "收藏对象")
-public class Favorites implements Serializable {
+@ApiModel(value = "FavoritesDto对象", description = "收藏Dto对象")
+public class FavoritesDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -36,9 +36,5 @@ public class Favorites implements Serializable {
 
     @ApiModelProperty("用户uuid")
     private String userId;
-
-    @ApiModelProperty("收藏的时间")
-    private LocalDateTime favoriteTime;
-
 
 }

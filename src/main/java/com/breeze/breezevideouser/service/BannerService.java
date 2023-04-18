@@ -19,5 +19,5 @@ public interface BannerService extends IService<Banner> {
      * 获取所有Banner
      * @return 所有的Banner
      */
-    public List<InfoVo> getAllBanner();
+    List<InfoVo> getAllBanner();
 }

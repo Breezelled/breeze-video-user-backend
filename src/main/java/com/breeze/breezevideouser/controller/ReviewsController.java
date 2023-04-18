@@ -36,8 +36,9 @@ public class ReviewsController {
     @ApiOperation(value = "添加电影评论")
     @PostMapping
     public ApiResponse save(@RequestBody Reviews reviews) {
-            return ApiResponse.ok(reviewsService.saveOrUpdate(reviews));
-            }
+        reviews.setSentimentRating(reviewsService.sentimentAnalysis(reviews.getContent()));
+        return ApiResponse.ok(reviewsService.save(reviews));
+    }
 
     @WebLog(description = "用id删除电影评论")
     @ApiOperation(value = "用id删除电影评论")

@@ -27,6 +27,9 @@ public class InfoVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty("id")
+    private Integer id;
+
     @ApiModelProperty("电影名")
     private String name;
 

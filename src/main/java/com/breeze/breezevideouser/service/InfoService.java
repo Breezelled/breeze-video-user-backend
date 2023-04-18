@@ -28,12 +28,12 @@ public interface InfoService extends IService<Info> {
      * @param limit 返回个数
      * @return 25个影片
      */
-    public List<InfoVo> topRatedAndNumByType(String type, Integer limit);
+    List<InfoVo> topRatedAndNumByType(String type, Integer limit);
 
     /**
      * 将每个电影type分割后按type数最多的排序
      * @param countLimit 最小count值
      * @return 所有的type个数信息
      */
-    public List<TypeVo> topNumType(Integer countLimit);
+    List<TypeVo> topNumType(Integer countLimit);
 }

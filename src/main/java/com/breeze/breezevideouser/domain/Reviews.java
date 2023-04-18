@@ -51,7 +51,7 @@ public class Reviews implements Serializable {
     private String userRating;
 
     @ApiModelProperty("情感分析评分")
-    private String sentimentRating;
+    private Double sentimentRating;
 
 
 }

@@ -1,5 +1,9 @@
 package com.breeze.breezevideouser.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.breeze.breezevideouser.domain.Info;
+import com.breeze.breezevideouser.domain.dto.FavoritesDto;
+import com.breeze.breezevideouser.service.InfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -7,7 +11,14 @@ import org.slf4j.LoggerFactory;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,12 +44,16 @@ public class FavoritesController {
     @Autowired
     private FavoritesService favoritesService;
 
+    @Autowired
+    private InfoService infoService;
+
     @WebLog(description = "添加收藏")
     @ApiOperation(value = "添加收藏")
     @PostMapping
     public ApiResponse save(@RequestBody Favorites favorites) {
-            return ApiResponse.ok(favoritesService.saveOrUpdate(favorites));
-            }
+        favorites.setFavoriteTime(LocalDateTime.now());
+        return ApiResponse.ok(favoritesService.save(favorites));
+    }
 
     @WebLog(description = "用id删除收藏")
     @ApiOperation(value = "用id删除收藏")
@@ -46,6 +61,16 @@ public class FavoritesController {
     public ApiResponse delete(@PathVariable Integer id) {
             return ApiResponse.ok(favoritesService.removeById(id));
             }
+
+    @WebLog(description = "用id删除收藏")
+    @ApiOperation(value = "用id删除收藏")
+    @DeleteMapping()
+    public ApiResponse deleteByUser(@RequestBody FavoritesDto favoritesDto) {
+        Map<String, Object> map = new ConcurrentHashMap<>();
+        map.put("movie_id", favoritesDto.getMovieId());
+        map.put("user_id", favoritesDto.getUserId());
+        return ApiResponse.ok(favoritesService.removeByMap(map));
+    }
 
     @WebLog(description = "查询全部收藏")
     @ApiOperation(value = "查询全部收藏")
@@ -66,7 +91,21 @@ public class FavoritesController {
     @GetMapping("/page")
     public ApiResponse findPage(@RequestParam Integer pageNum,
     @RequestParam Integer pageSize) {
-            return ApiResponse.ok(favoritesService.page(new Page<>(pageNum, pageSize)));
+        return ApiResponse.ok(favoritesService.page(new Page<>(pageNum, pageSize)));
+    }
+
+    @WebLog(description = "根据用户查找其收藏")
+    @ApiOperation(value = "根据用户查找其收藏")
+    @PostMapping("/user")
+    public ApiResponse userFavorites(@RequestBody FavoritesDto favoritesDto) {
+        QueryWrapper<Favorites> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", favoritesDto.getUserId());
+        List<Favorites> list = favoritesService.list(queryWrapper);
+        List<Integer> ids = new ArrayList<>();
+        for (Favorites f: list) {
+            ids.add(f.getMovieId());
+        }
+        return ApiResponse.ok(infoService.listByIds(ids));
     }
 
 }
