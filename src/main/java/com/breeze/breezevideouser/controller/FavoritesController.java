@@ -2,6 +2,7 @@ package com.breeze.breezevideouser.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.breeze.breezevideouser.domain.dto.FavoritesLikesDto;
+import com.breeze.breezevideouser.domain.vo.InfoVo;
 import com.breeze.breezevideouser.service.InfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -96,18 +97,7 @@ public class FavoritesController {
     @ApiOperation(value = "根据用户查找其收藏")
     @PostMapping("/user")
     public ApiResponse userFavorites(@RequestBody FavoritesLikesDto favoritesLikesDto) {
-        QueryWrapper<Favorites> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_id", favoritesLikesDto.getUserId());
-        queryWrapper.orderByDesc("favorite_time");
-        List<Favorites> list = favoritesService.list(queryWrapper);
-        List<Integer> ids = new ArrayList<>();
-        for (Favorites f: list) {
-            ids.add(f.getMovieId());
-        }
-        if (!ids.isEmpty()){
-            return ApiResponse.ok(infoService.listByIds(ids));
-        }
-        return ApiResponse.ok(new ArrayList<>());
+        return ApiResponse.ok(infoService.userFavorites(favoritesLikesDto.getUserId()));
     }
 
 }

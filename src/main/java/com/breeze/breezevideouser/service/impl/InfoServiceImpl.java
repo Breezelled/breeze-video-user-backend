@@ -48,4 +48,9 @@ public class InfoServiceImpl extends ServiceImpl<InfoMapper, Info> implements In
         }
         return list;
     }
+
+    @Override
+    public List<InfoVo> userFavorites(String userId) {
+        return infoMapper.userFavorites(userId);
+    }
 }

@@ -46,4 +46,11 @@ public interface InfoMapper extends BaseMapper<Info> {
      */
     List<TypeVo> topNumType(@Param("countLimit") Integer countLimit);
 
+    /**
+     * 查询用户收藏 按最近收藏优先返回
+     * @param userId 用户uuid
+     * @return 用户收藏列表
+     */
+    List<InfoVo> userFavorites(@Param("userId") String userId);
+
 }

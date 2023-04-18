@@ -4,6 +4,7 @@ import com.breeze.breezevideouser.domain.Info;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.breeze.breezevideouser.domain.vo.InfoVo;
 import com.breeze.breezevideouser.domain.vo.TypeVo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -36,4 +37,11 @@ public interface InfoService extends IService<Info> {
      * @return 所有的type个数信息
      */
     List<TypeVo> topNumType(Integer countLimit);
+
+    /**
+     * 查询用户收藏 按最近收藏优先返回
+     * @param userId 用户uuid
+     * @return 用户收藏列表
+     */
+    List<InfoVo> userFavorites(@Param("userId") String userId);
 }

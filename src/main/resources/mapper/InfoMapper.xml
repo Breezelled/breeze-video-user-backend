@@ -185,5 +185,59 @@
         ORDER BY COUNT ( TYPE ) DESC
     </select>
 
+    <select id="userFavorites" resultType="com.breeze.breezevideouser.domain.vo.InfoVo">
+            SELECT
+            info.ID,
+            NAME,
+            runtime,
+            TYPE,
+            release_date,
+            intro,
+            director,
+            writer,
+            star,
+            budget,
+            revenue,
+            LANGUAGE,
+            company,
+            country,
+            rating,
+            rating_num,
+            tag,
+            imdb_id,
+            MAX ( CASE WHEN s3.object_name LIKE'poster%' THEN s3.object_name ELSE NULL END ) AS poster_url,
+            MAX ( CASE WHEN s3.object_name LIKE'trailer%' THEN s3.object_name ELSE NULL END ) AS trailer_url
+            FROM
+            info
+            INNER JOIN s3 ON info.ID = s3.movie_id
+            JOIN favorites ON info.ID = favorites.movie_id
+            WHERE
+            info.ID IN ( SELECT movie_id FROM favorites WHERE user_id = #{userId} )
+            GROUP BY
+            info.ID,
+            NAME,
+            runtime,
+            TYPE,
+            release_date,
+            intro,
+            director,
+            writer,
+            star,
+            budget,
+            revenue,
+            LANGUAGE,
+            company,
+            country,
+            rating,
+            rating_num,
+            tag,
+            imdb_id,
+            favorites.favorite_time,
+            user_id
+            HAVING
+            user_id = #{userId}
+            ORDER BY
+            favorite_time DESC
+    </select>
 
 </mapper>
