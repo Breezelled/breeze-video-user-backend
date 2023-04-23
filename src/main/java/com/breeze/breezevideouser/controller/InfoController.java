@@ -1,13 +1,15 @@
 package com.breeze.breezevideouser.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.breeze.breezevideouser.domain.S3;
+import com.breeze.breezevideouser.domain.vo.InfoVo;
+import com.breeze.breezevideouser.domain.vo.UsersVo;
 import com.breeze.breezevideouser.service.S3Service;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ import com.breeze.breezevideouser.domain.Info;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <p>
@@ -147,5 +151,26 @@ public class InfoController {
     @GetMapping("/topNumType/{countLimit}")
     public ApiResponse topNumType(@PathVariable Integer countLimit) {
         return ApiResponse.ok(infoService.topNumType(countLimit));
+    }
+
+    @WebLog(description = "给用户个性化推荐")
+    @ApiOperation(value = "给用户个性化推荐")
+    @PostMapping("/recommend")
+    public ApiResponse recommend(@RequestBody UsersVo usersVo,
+                                 @RequestParam Integer pageNum,
+                                 @RequestParam Integer pageSize) {
+        List<InfoVo> list = infoService.personalizedRecommendation(usersVo.getUserid());
+        Map<String, Object> map = new ConcurrentHashMap<>();
+        int total = list.size();
+        int fromIndex = (pageNum - 1) * pageSize;
+        int toIndex = Math.min(fromIndex + pageSize, total);
+        int pageCount = total / pageSize + (total % pageSize == 0 ? 0 : 1);
+        List<InfoVo> pageList = list.subList(fromIndex, toIndex);
+        map.put("records", pageList);
+        map.put("total", total);
+        map.put("size", pageSize);
+        map.put("current", pageNum);
+        map.put("page", pageCount);
+        return ApiResponse.ok(map);
     }
 }

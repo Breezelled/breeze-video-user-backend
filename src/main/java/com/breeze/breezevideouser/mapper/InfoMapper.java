@@ -53,4 +53,11 @@ public interface InfoMapper extends BaseMapper<Info> {
      */
     List<InfoVo> userFavorites(@Param("userId") String userId);
 
+    /**
+     * 查询所有包括在类型数组中的影片
+     * @param types 用户兴趣类型数组
+     * @return 所有包括在类型数组中的影片
+     */
+    List<InfoVo> getInfoByTypes(String[] types);
+
 }

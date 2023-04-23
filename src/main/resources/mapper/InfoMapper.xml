@@ -240,4 +240,37 @@
             favorite_time DESC
     </select>
 
+    <select id="getInfoByTypes" parameterType="java.util.List" resultType="com.breeze.breezevideouser.domain.vo.InfoVo">
+        SELECT
+        info.ID,
+        NAME,
+        runtime,
+        TYPE,
+        release_date,
+        intro,
+        director,
+        writer,
+        star,
+        budget,
+        revenue,
+        LANGUAGE,
+        company,
+        country,
+        rating,
+        rating_num,
+        tag,
+        imdb_id,
+        MAX ( CASE WHEN s3.object_name LIKE'poster%' THEN s3.object_name ELSE NULL END ) AS poster_url,
+        MAX ( CASE WHEN s3.object_name LIKE'trailer%' THEN s3.object_name ELSE NULL END ) AS trailer_url
+        FROM
+        info
+        INNER JOIN s3 ON info.ID = s3.movie_id
+        JOIN favorites ON info.ID = favorites.movie_id
+        WHERE
+        <foreach collection="array" item="type" separator="OR">
+            #{type} = ANY(string_to_array(type, '|'))
+        </foreach>
+        <include refid="infoVo_GroupBy_Having_List"/>
+    </select>
+
 </mapper>

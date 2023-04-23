@@ -44,4 +44,11 @@ public interface InfoService extends IService<Info> {
      * @return 用户收藏列表
      */
     List<InfoVo> userFavorites(@Param("userId") String userId);
+
+    /**
+     * 给用户个性化推荐影片
+     * @param userId 用户uuid
+     * @return 个性化推荐列表
+     */
+    List<InfoVo> personalizedRecommendation(String userId);
 }
