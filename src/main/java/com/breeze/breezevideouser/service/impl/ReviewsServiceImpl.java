@@ -10,6 +10,7 @@ import com.breeze.breezevideouser.mapper.ReviewsMapper;
 import com.breeze.breezevideouser.service.ReviewsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.breeze.breezevideouser.utils.YamlUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
@@ -26,6 +27,9 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Service
 public class ReviewsServiceImpl extends ServiceImpl<ReviewsMapper, Reviews> implements ReviewsService {
+
+    @Autowired
+    private ReviewsMapper reviewsMapper;
 
     @Override
     public Double sentimentAnalysis(String content) {
@@ -48,5 +52,11 @@ public class ReviewsServiceImpl extends ServiceImpl<ReviewsMapper, Reviews> impl
         DecimalFormat df = new DecimalFormat("#.######");
         String formattedValue = df.format(value);
         return Double.parseDouble(formattedValue);
+    }
+
+    @Override
+    public Integer saveAndGetId(Reviews reviews) {
+        reviewsMapper.saveAndGetId(reviews);
+        return reviews.getId();
     }
 }

@@ -36,6 +36,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     public void createUser(UserDetails user) {
         ((Users) user).setPassword(passwordEncoder.encode(user.getPassword()));
         ((Users) user).setUserid(UUID.randomUUID().toString());
+        ((Users) user).setGender("O");
         ((Users) user).setCreateTime(LocalDateTime.now());
         usersMapper.insert((Users) user);
     }

@@ -55,7 +55,7 @@ public class InfoServiceImpl extends ServiceImpl<InfoMapper, Info> implements In
     @Cacheable(value = "topRated", key = "'topRated.json'")
     @Override
     public List<InfoVo> topRated() {
-        return infoMapper.topRated();
+        return infoMapper.topRated(0, 25);
     }
 
     @Override
@@ -76,8 +76,9 @@ public class InfoServiceImpl extends ServiceImpl<InfoMapper, Info> implements In
     }
 
     @Override
-    public List<InfoVo> userFavorites(String userId) {
-        return infoMapper.userFavorites(userId);
+    public Map<String, Object> userFavorites(String userId, Integer pageNum, Integer pageSize) {
+        return page(pageNum, pageSize, infoMapper.countUserFavorites(userId),
+                infoMapper.userFavorites(userId, (pageNum - 1) * pageSize, pageSize));
     }
 
     @Override
@@ -115,8 +116,6 @@ public class InfoServiceImpl extends ServiceImpl<InfoMapper, Info> implements In
 
         JSONObject json = JSONUtil.parseObj(response.body());
 
-        System.out.println(response.body());
-
         JSONArray predictions = json.getJSONArray("predictions");
 
         List<Double> predictionList = predictions.toList(Double.class);
@@ -126,5 +125,38 @@ public class InfoServiceImpl extends ServiceImpl<InfoMapper, Info> implements In
                 .sorted(Comparator.comparingDouble(predictionList::get).reversed())
                 .map(list::get)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Map<String, Object> getPageInfo(Integer pageNum, Integer pageSize) {
+
+        return page(pageNum, pageSize, infoMapper.countBothUrlNum(),
+                infoMapper.getPageInfo( (pageNum - 1) * pageSize, pageSize));
+    }
+
+    @Override
+    public Map<String, Object> pageTopRated(Integer pageNum, Integer pageSize) {
+        return page(pageNum, pageSize, infoMapper.countTopRated(),
+                infoMapper.topRated((pageNum - 1) * pageSize, pageSize));
+    }
+
+    @Override
+    public Map<String, Object> pageByWebSearch(Integer pageNum, Integer pageSize, String content) {
+        return page(pageNum, pageSize, infoMapper.countWebSearch(content),
+                infoMapper.getPageByWebSearch((pageNum - 1) * pageSize, pageSize, content));
+    }
+
+    private Map<String, Object> page(Integer pageNum, Integer pageSize, Integer total, List<InfoVo> list){
+
+        Map<String, Object> map = new ConcurrentHashMap<>();
+
+        int pageCount = (total / pageSize + (total % pageSize == 0 ? 0 : 1));
+
+        map.put("records", list);
+        map.put("total", total);
+        map.put("size", pageSize);
+        map.put("current", pageNum);
+        map.put("page", pageCount);
+        return map;
     }
 }

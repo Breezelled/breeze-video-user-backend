@@ -4,44 +4,44 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.breeze.breezevideouser.domain.Info">
-        <id column="id" property="id" />
-        <result column="name" property="name" />
-        <result column="runtime" property="runtime" />
-        <result column="type" property="type" />
-        <result column="release_date" property="releaseDate" />
-        <result column="intro" property="intro" />
-        <result column="director" property="director" />
-        <result column="writer" property="writer" />
-        <result column="star" property="star" />
-        <result column="budget" property="budget" />
-        <result column="revenue" property="revenue" />
-        <result column="language" property="language" />
-        <result column="company" property="company" />
-        <result column="country" property="country" />
-        <result column="rating" property="rating" />
-        <result column="rating_num" property="ratingNum" />
-        <result column="tag" property="tag" />
-        <result column="imdb_id" property="imdbId" />
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="runtime" property="runtime"/>
+        <result column="type" property="type"/>
+        <result column="release_date" property="releaseDate"/>
+        <result column="intro" property="intro"/>
+        <result column="director" property="director"/>
+        <result column="writer" property="writer"/>
+        <result column="star" property="star"/>
+        <result column="budget" property="budget"/>
+        <result column="revenue" property="revenue"/>
+        <result column="language" property="language"/>
+        <result column="company" property="company"/>
+        <result column="country" property="country"/>
+        <result column="rating" property="rating"/>
+        <result column="rating_num" property="ratingNum"/>
+        <result column="tag" property="tag"/>
+        <result column="imdb_id" property="imdbId"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, runtime, type, release_date, intro, director, writer, star, budget, revenue, language, company, country, rating, rating_num, tag, imdb_id
+        id
+        , name, runtime, type, release_date, intro, director, writer, star, budget, revenue, language, company, country, rating, rating_num, tag, imdb_id
     </sql>
 
     <sql id="infoVo_Select_List">
-        SELECT
-            info.id,
-            NAME,
-            runtime,
-            TYPE,
-            release_date,
-            intro,
-            director,
-            writer,
-            star,
-            budget,
-            revenue,
+        SELECT info.id,
+               NAME,
+               runtime,
+               TYPE,
+               release_date,
+               intro,
+               director,
+               writer,
+               star,
+               budget,
+               revenue,
             LANGUAGE,
             company,
             country,
@@ -49,11 +49,12 @@
             rating_num,
             tag,
             imdb_id,
-            MAX ( CASE WHEN s3.object_name LIKE'poster%' THEN s3.object_name ELSE NULL END ) AS poster_url,
-            MAX ( CASE WHEN s3.object_name LIKE'trailer%' THEN s3.object_name ELSE NULL END ) AS trailer_url
+            MAX ( CASE WHEN s3.object_name LIKE 'poster%' THEN s3.object_name ELSE NULL END ) AS poster_url,
+            MAX ( CASE WHEN s3.object_name LIKE 'trailer%' THEN s3.object_name ELSE NULL END ) AS trailer_url
         FROM
             info
-            INNER JOIN s3 ON info.ID = s3.movie_id
+            INNER JOIN s3
+        ON info.ID = s3.movie_id
         WHERE
             ID IN
     </sql>
@@ -84,73 +85,72 @@
     </sql>
 
     <select id="getAllBanner" resultType="com.breeze.breezevideouser.domain.vo.InfoVo">
-        SELECT
-            i.id,
-            i.name,
-            i.runtime,
-            i.type,
-            i.release_date,
-            i.intro,
-            i.director,
-            i.writer,
-            i.star,
-            i.budget,
-            i.revenue,
-            i.language,
-            i.company,
-            i.country,
-            i.rating,
-            i.rating_num,
-            i.tag,
-            i.imdb_id,
-            s3.movie_id,
-            MAX(CASE WHEN s3.object_name LIKE 'poster%' THEN s3.object_name ELSE NULL END) AS poster_url,
-            MAX(CASE WHEN s3.object_name LIKE 'trailer%' THEN s3.object_name ELSE NULL END) AS trailer_url
-        FROM
-            banner
-                INNER JOIN info i ON banner.movie_id = i.id
-                INNER JOIN s3 ON banner.movie_id = s3.movie_id
-        GROUP BY
-            i.id,
-            i.name,
-            i.runtime,
-            i.type,
-            i.release_date,
-            i.intro,
-            i.director,
-            i.writer,
-            i.star,
-            i.budget,
-            i.revenue,
-            i.language,
-            i.company,
-            i.country,
-            i.rating,
-            i.rating_num,
-            i.tag,
-            i.imdb_id,
-            s3.movie_id
+        SELECT i.id,
+               i.name,
+               i.runtime,
+               i.type,
+               i.release_date,
+               i.intro,
+               i.director,
+               i.writer,
+               i.star,
+               i.budget,
+               i.revenue,
+               i.language,
+               i.company,
+               i.country,
+               i.rating,
+               i.rating_num,
+               i.tag,
+               i.imdb_id,
+               s3.movie_id,
+               MAX(CASE WHEN s3.object_name LIKE 'poster%' THEN s3.object_name ELSE NULL END)  AS poster_url,
+               MAX(CASE WHEN s3.object_name LIKE 'trailer%' THEN s3.object_name ELSE NULL END) AS trailer_url
+        FROM banner
+                 INNER JOIN info i ON banner.movie_id = i.id
+                 INNER JOIN s3 ON banner.movie_id = s3.movie_id
+        GROUP BY i.id,
+                 i.name,
+                 i.runtime,
+                 i.type,
+                 i.release_date,
+                 i.intro,
+                 i.director,
+                 i.writer,
+                 i.star,
+                 i.budget,
+                 i.revenue,
+                 i.language,
+                 i.company,
+                 i.country,
+                 i.rating,
+                 i.rating_num,
+                 i.tag,
+                 i.imdb_id,
+                 s3.movie_id
     </select>
-    
+
     <select id="topRated" resultType="com.breeze.breezevideouser.domain.vo.InfoVo">
-         <include refid="infoVo_Select_List"/> (
-            SELECT ID
-            FROM
-            info
-            WHERE
-            release_date IS NOT NULL AND rating > '7.0/10'
-            )
-            <include refid="infoVo_GroupBy_Having_List"/>
-            ORDER BY
-            CASE
-                WHEN release_date ~ E'^\\d{4}.*' THEN
-                to_date( release_date, 'YYYY' )
-                WHEN release_date ~ E'^\\w+ \\d{1,2}, \\d{4} \\(.*\\)$' THEN
-                to_date( regexp_replace( release_date, E'\\s*\\([^)]*\\)\\s*$', '' ), 'Month DD, YYYY' )
-                WHEN release_date ~ E'^\\w+ \\d{4} \\(.*\\)$' THEN
-                to_date( regexp_replace( release_date, E'\\s*\\([^)]*\\)\\s*$', '' ), 'Month YYYY' ) ELSE to_date( release_date, 'YYYY' )
-            END DESC
-            LIMIT 25
+        <include refid="infoVo_Select_List"/>
+        (
+        SELECT ID
+        FROM
+        info
+        WHERE
+        release_date IS NOT NULL AND rating > '7.0/10'
+        )
+        <include refid="infoVo_GroupBy_Having_List"/>
+        ORDER BY
+        CASE
+        WHEN release_date ~ E'^\\d{4}.*' THEN
+        to_date( release_date, 'YYYY' )
+        WHEN release_date ~ E'^\\w+ \\d{1,2}, \\d{4} \\(.*\\)$' THEN
+        to_date( regexp_replace( release_date, E'\\s*\\([^)]*\\)\\s*$', '' ), 'Month DD, YYYY' )
+        WHEN release_date ~ E'^\\w+ \\d{4} \\(.*\\)$' THEN
+        to_date( regexp_replace( release_date, E'\\s*\\([^)]*\\)\\s*$', '' ), 'Month YYYY' ) ELSE to_date( release_date,
+        'YYYY' )
+        END DESC, rating DESC
+        LIMIT #{pageSize} OFFSET #{offset}
     </select>
 
     <sql id="orderBy_RatingNum_Rating">
@@ -159,11 +159,13 @@
         CASE
         WHEN RIGHT ( rating_num, 1 ) = 'M' THEN
         ( SUBSTRING ( rating_num, 1, LENGTH ( rating_num ) - 1 ) :: NUMERIC * 1000000 ) ELSE ( SUBSTRING ( rating_num, 1, LENGTH ( rating_num ) - 1 ) :: NUMERIC * 1000 )
-        END DESC
+        END
+        DESC
     </sql>
 
     <select id="topRatedAndNumByType" resultType="com.breeze.breezevideouser.domain.vo.InfoVo">
-        <include refid="infoVo_Select_List"/> (
+        <include refid="infoVo_Select_List"/>
+        (
         SELECT ID
         FROM
         info
@@ -177,27 +179,25 @@
     </select>
 
     <select id="topNumType" resultType="com.breeze.breezevideouser.domain.vo.TypeVo">
-        SELECT TYPE, COUNT ( TYPE ) AS type_count
-        FROM
-            ( SELECT info.ID, regexp_split_to_table( info.TYPE, E'\\|' ) AS TYPE FROM info ) T
+        SELECT TYPE, COUNT(TYPE) AS type_count
+        FROM (SELECT info.ID, regexp_split_to_table(info.TYPE, E'\\|') AS TYPE FROM info) T
         GROUP BY TYPE
-        HAVING COUNT ( TYPE ) > #{countLimit}
-        ORDER BY COUNT ( TYPE ) DESC
+        HAVING COUNT(TYPE) > #{countLimit}
+        ORDER BY COUNT(TYPE) DESC
     </select>
 
     <select id="userFavorites" resultType="com.breeze.breezevideouser.domain.vo.InfoVo">
-            SELECT
-            info.ID,
-            NAME,
-            runtime,
-            TYPE,
-            release_date,
-            intro,
-            director,
-            writer,
-            star,
-            budget,
-            revenue,
+        SELECT info.ID,
+               NAME,
+               runtime,
+               TYPE,
+               release_date,
+               intro,
+               director,
+               writer,
+               star,
+               budget,
+               revenue,
             LANGUAGE,
             company,
             country,
@@ -205,15 +205,16 @@
             rating_num,
             tag,
             imdb_id,
-            MAX ( CASE WHEN s3.object_name LIKE'poster%' THEN s3.object_name ELSE NULL END ) AS poster_url,
-            MAX ( CASE WHEN s3.object_name LIKE'trailer%' THEN s3.object_name ELSE NULL END ) AS trailer_url
-            FROM
+            MAX ( CASE WHEN s3.object_name LIKE 'poster%' THEN s3.object_name ELSE NULL END ) AS poster_url,
+            MAX ( CASE WHEN s3.object_name LIKE 'trailer%' THEN s3.object_name ELSE NULL END ) AS trailer_url
+        FROM
             info
-            INNER JOIN s3 ON info.ID = s3.movie_id
+            INNER JOIN s3
+        ON info.ID = s3.movie_id
             JOIN favorites ON info.ID = favorites.movie_id
-            WHERE
+        WHERE
             info.ID IN ( SELECT movie_id FROM favorites WHERE user_id = #{userId} )
-            GROUP BY
+        GROUP BY
             info.ID,
             NAME,
             runtime,
@@ -234,10 +235,12 @@
             imdb_id,
             favorites.favorite_time,
             user_id
-            HAVING
+        HAVING
             user_id = #{userId}
-            ORDER BY
+        ORDER BY
             favorite_time DESC
+            LIMIT #{pageSize}
+        OFFSET #{offset}
     </select>
 
     <select id="getInfoByTypes" parameterType="java.util.List" resultType="com.breeze.breezevideouser.domain.vo.InfoVo">
@@ -271,6 +274,206 @@
             #{type} = ANY(string_to_array(type, '|'))
         </foreach>
         <include refid="infoVo_GroupBy_Having_List"/>
+    </select>
+
+    <select id="getPageInfo" resultType="com.breeze.breezevideouser.domain.vo.InfoVo">
+        SELECT
+        info.ID,
+        NAME,
+        runtime,
+        TYPE,
+        release_date,
+        intro,
+        director,
+        writer,
+        star,
+        budget,
+        revenue,
+        LANGUAGE,
+        company,
+        country,
+        rating,
+        rating_num,
+        tag,
+        imdb_id,
+        MAX ( CASE WHEN s3.object_name LIKE'poster%' THEN s3.object_name ELSE NULL END ) AS poster_url,
+        MAX ( CASE WHEN s3.object_name LIKE'trailer%' THEN s3.object_name ELSE NULL END ) AS trailer_url
+        FROM
+        info
+        INNER JOIN s3 ON info.ID = s3.movie_id
+        <include refid="infoVo_GroupBy_Having_List"/>
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
+    <select id="countBothUrlNum" resultType="int">
+        SELECT COUNT(*) AS total_count
+        FROM (
+        SELECT
+        info.ID,
+        NAME,
+        runtime,
+        TYPE,
+        release_date,
+        intro,
+        director,
+        writer,
+        star,
+        budget,
+        revenue,
+        LANGUAGE,
+        company,
+        country,
+        rating,
+        rating_num,
+        tag,
+        imdb_id,
+        MAX(CASE WHEN s3.object_name LIKE 'poster%' THEN s3.object_name ELSE NULL END) AS poster_url,
+        MAX(CASE WHEN s3.object_name LIKE 'trailer%' THEN s3.object_name ELSE NULL END) AS trailer_url
+        FROM info
+        INNER JOIN s3 ON info.ID = s3.movie_id
+        <include refid="infoVo_GroupBy_Having_List"/>
+        ) sub_query;
+    </select>
+
+    <select id="countTopRated" resultType="int">
+        SELECT COUNT(*) AS total_count
+        FROM (
+        <include refid="infoVo_Select_List"/>
+        (
+        SELECT ID
+        FROM
+        info
+        WHERE
+        release_date IS NOT NULL AND rating > '7.0/10'
+        )
+        <include refid="infoVo_GroupBy_Having_List"/>
+        ORDER BY
+        CASE
+        WHEN release_date ~ E'^\\d{4}.*' THEN
+        to_date( release_date, 'YYYY' )
+        WHEN release_date ~ E'^\\w+ \\d{1,2}, \\d{4} \\(.*\\)$' THEN
+        to_date( regexp_replace( release_date, E'\\s*\\([^)]*\\)\\s*$', '' ), 'Month DD, YYYY' )
+        WHEN release_date ~ E'^\\w+ \\d{4} \\(.*\\)$' THEN
+        to_date( regexp_replace( release_date, E'\\s*\\([^)]*\\)\\s*$', '' ), 'Month YYYY' ) ELSE to_date( release_date,
+        'YYYY' )
+        END DESC, rating DESC
+        ) sub_query;
+    </select>
+
+    <select id="countUserFavorites" resultType="int">
+        SELECT COUNT(*) AS total_count
+        FROM (SELECT info.ID,
+                     NAME,
+                     runtime,
+                     TYPE,
+                     release_date,
+                     intro,
+                     director,
+                     writer,
+                     star,
+                     budget,
+                     revenue,
+                  LANGUAGE,
+                  company,
+                  country,
+                  rating,
+                  rating_num,
+                  tag,
+                  imdb_id,
+                  MAX ( CASE WHEN s3.object_name LIKE 'poster%' THEN s3.object_name ELSE NULL END ) AS poster_url,
+                  MAX ( CASE WHEN s3.object_name LIKE 'trailer%' THEN s3.object_name ELSE NULL END ) AS trailer_url
+              FROM
+                  info
+                  INNER JOIN s3
+              ON info.ID = s3.movie_id
+                  JOIN favorites ON info.ID = favorites.movie_id
+              WHERE
+                  info.ID IN ( SELECT movie_id FROM favorites WHERE user_id = #{userId} )
+              GROUP BY
+                  info.ID,
+                  NAME,
+                  runtime,
+                  TYPE,
+                  release_date,
+                  intro,
+                  director,
+                  writer,
+                  star,
+                  budget,
+                  revenue,
+                  LANGUAGE,
+                  company,
+                  country,
+                  rating,
+                  rating_num,
+                  tag,
+                  imdb_id,
+                  favorites.favorite_time,
+                  user_id
+              HAVING
+                  user_id = #{userId}
+              ORDER BY
+                  favorite_time DESC) sub_query;
+    </select>
+
+    <select id="getPageByWebSearch" resultType="com.breeze.breezevideouser.domain.vo.InfoVo">
+        SELECT
+        info.ID,
+        NAME,
+        runtime,
+        TYPE,
+        release_date,
+        intro,
+        director,
+        writer,
+        star,
+        budget,
+        revenue,
+        LANGUAGE,
+        company,
+        country,
+        rating,
+        rating_num,
+        tag,
+        imdb_id,
+        MAX ( CASE WHEN s3.object_name LIKE'poster%' THEN s3.object_name ELSE NULL END ) AS poster_url,
+        MAX ( CASE WHEN s3.object_name LIKE'trailer%' THEN s3.object_name ELSE NULL END ) AS trailer_url
+        FROM
+        info
+        INNER JOIN s3 ON info.ID = s3.movie_id
+        WHERE name ilike CONCAT('%', #{content}, '%')
+        <include refid="infoVo_GroupBy_Having_List"/>
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
+    <select id="countWebSearch" resultType="int">
+        SELECT COUNT(*) AS total_count
+        FROM ( SELECT
+        info.ID,
+        NAME,
+        runtime,
+        TYPE,
+        release_date,
+        intro,
+        director,
+        writer,
+        star,
+        budget,
+        revenue,
+        LANGUAGE,
+        company,
+        country,
+        rating,
+        rating_num,
+        tag,
+        imdb_id,
+        MAX ( CASE WHEN s3.object_name LIKE'poster%' THEN s3.object_name ELSE NULL END ) AS poster_url,
+        MAX ( CASE WHEN s3.object_name LIKE'trailer%' THEN s3.object_name ELSE NULL END ) AS trailer_url
+        FROM
+        info
+        INNER JOIN s3 ON info.ID = s3.movie_id
+        WHERE name ilike CONCAT('%', #{content}, '%')
+        <include refid="infoVo_GroupBy_Having_List"/>) sub_query;
     </select>
 
 </mapper>

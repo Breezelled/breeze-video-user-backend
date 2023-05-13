@@ -7,6 +7,7 @@ import com.breeze.breezevideouser.domain.vo.TypeVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -41,9 +42,11 @@ public interface InfoService extends IService<Info> {
     /**
      * 查询用户收藏 按最近收藏优先返回
      * @param userId 用户uuid
+     * @param pageNum 当前页码
+     * @param pageSize 当前页面数量
      * @return 用户收藏列表
      */
-    List<InfoVo> userFavorites(@Param("userId") String userId);
+    Map<String, Object> userFavorites(@Param("userId") String userId, Integer pageNum, Integer pageSize);
 
     /**
      * 给用户个性化推荐影片
@@ -51,4 +54,29 @@ public interface InfoService extends IService<Info> {
      * @return 个性化推荐列表
      */
     List<InfoVo> personalizedRecommendation(String userId);
+
+    /**
+     * 查询分页带url的影片信息
+     * @param pageNum 当前页码
+     * @param pageSize 当前页面数量
+     * @return 分页结果
+     */
+    Map<String, Object> getPageInfo(Integer pageNum, Integer pageSize);
+
+    /**
+     * 查询最新release的且rating>7.0 且都有海报和预告片的
+     * @param pageNum 当前页码
+     * @param pageSize 当前页面数量
+     * @return 分页结果
+     */
+    Map<String, Object> pageTopRated(Integer pageNum, Integer pageSize);
+
+    /**
+     * 根据搜索内容进行模糊匹配后分页
+     * @param pageNum 当前页码
+     * @param pageSize 当前页面数量
+     * @param content 搜索内容
+     * @return 搜索分页结果
+     */
+    Map<String, Object> pageByWebSearch(Integer pageNum, Integer pageSize, String content);
 }

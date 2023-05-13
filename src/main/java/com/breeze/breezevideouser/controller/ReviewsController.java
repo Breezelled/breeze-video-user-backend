@@ -1,5 +1,6 @@
 package com.breeze.breezevideouser.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -37,7 +38,7 @@ public class ReviewsController {
     @PostMapping
     public ApiResponse save(@RequestBody Reviews reviews) {
         reviews.setSentimentRating(reviewsService.sentimentAnalysis(reviews.getContent()));
-        return ApiResponse.ok(reviewsService.save(reviews));
+        return ApiResponse.ok(reviewsService.saveAndGetId(reviews));
     }
 
     @WebLog(description = "用id删除电影评论")
@@ -54,12 +55,15 @@ public class ReviewsController {
             return ApiResponse.ok(reviewsService.list());
             }
 
-    @WebLog(description = "用id查找电影评论")
-    @ApiOperation(value = "用id查找电影评论")
+    @WebLog(description = "用电影id查找电影评论")
+    @ApiOperation(value = "用电影id查找电影评论")
     @GetMapping("/{id}")
     public ApiResponse findOne(@PathVariable Integer id) {
-            return ApiResponse.ok(reviewsService.getById(id));
-            }
+        QueryWrapper<Reviews> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("movie_id", id);
+        queryWrapper.orderByDesc("id");
+        return ApiResponse.ok(reviewsService.list(queryWrapper));
+    }
 
     @WebLog(description = "分页电影评论")
     @ApiOperation(value = "分页电影评论")

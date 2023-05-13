@@ -17,6 +17,6 @@ public interface LoginImageMapper extends BaseMapper<LoginImage> {
      * 获取当前管理员选择的登录页面图片
      * @return 图片链接
      */
-    public String getCurrentLoginImage();
+    String getCurrentLoginImage();
 
 }

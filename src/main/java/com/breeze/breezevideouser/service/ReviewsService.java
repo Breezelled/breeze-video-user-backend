@@ -18,4 +18,12 @@ public interface ReviewsService extends IService<Reviews> {
      * @return 分析后的数值
      */
     Double sentimentAnalysis(String content);
+
+    /**
+     * 保存并返回当前保存的Id
+     * @param reviews 待保存的评论
+     * @return 当前评论Id
+     */
+    Integer saveAndGetId(Reviews reviews);
+
 }

@@ -27,9 +27,11 @@ public interface InfoMapper extends BaseMapper<Info> {
 
     /**
      * 查询最新release的且rating>7.0 且都有海报和预告片的
+     * @param offset 起始行
+     * @param pageSize 当前页面数量
      * @return 25个影片
      */
-    List<InfoVo> topRated();
+    List<InfoVo> topRated(Integer offset, Integer pageSize);
 
     /**
      * 查询评分最高的特定类型的影片，评分相同按评分数排名 且都有海报和预告片的
@@ -51,7 +53,7 @@ public interface InfoMapper extends BaseMapper<Info> {
      * @param userId 用户uuid
      * @return 用户收藏列表
      */
-    List<InfoVo> userFavorites(@Param("userId") String userId);
+    List<InfoVo> userFavorites(@Param("userId") String userId, Integer offset, Integer pageSize);
 
     /**
      * 查询所有包括在类型数组中的影片
@@ -59,5 +61,48 @@ public interface InfoMapper extends BaseMapper<Info> {
      * @return 所有包括在类型数组中的影片
      */
     List<InfoVo> getInfoByTypes(String[] types);
+
+    /**
+     * 查询分页带url的影片信息
+     * @param offset 起始行
+     * @param pageSize 当前页面数量
+     * @return 分页结果
+     */
+    List<InfoVo> getPageInfo(Integer offset, Integer pageSize);
+
+    /**
+     * 查询海报和预告片都有的影片总数
+     * @return 总数
+     */
+    int countBothUrlNum();
+
+    /**
+     * 查询最新release的且rating>7.0 且都有海报和预告片的总数
+     * @return 总数
+     */
+    int countTopRated();
+
+    /**
+     * 查询最新release的且rating>7.0 且都有海报和预告片的总数
+     * @param userId 用户uuid
+     * @return 总数
+     */
+    int countUserFavorites(String userId);
+
+    /**
+     * 根据搜索内容进行模糊匹配后分页
+     * @param offset 起始行
+     * @param pageSize 当前页面数量
+     * @param content 搜索内容
+     * @return 分页结果
+     */
+    List<InfoVo> getPageByWebSearch(Integer offset, Integer pageSize, String content);
+
+    /**
+     * 查询搜索内容进行模糊匹配总数
+     * @param content 搜索内容
+     * @return 总数
+     */
+    int countWebSearch(String content);
 
 }

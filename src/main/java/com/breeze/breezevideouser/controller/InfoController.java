@@ -3,6 +3,7 @@ package com.breeze.breezevideouser.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.breeze.breezevideouser.domain.S3;
+import com.breeze.breezevideouser.domain.dto.SearchDto;
 import com.breeze.breezevideouser.domain.vo.InfoVo;
 import com.breeze.breezevideouser.domain.vo.UsersVo;
 import com.breeze.breezevideouser.service.S3Service;
@@ -45,6 +46,7 @@ public class InfoController {
 
     @Autowired
     private S3Service s3Service;
+
     @WebLog(description = "添加电影信息")
     @ApiOperation(value = "添加电影信息")
     @PostMapping
@@ -80,7 +82,8 @@ public class InfoController {
     @GetMapping("/page")
     public ApiResponse findPage(@RequestParam Integer pageNum,
     @RequestParam Integer pageSize) {
-            return ApiResponse.ok(infoService.page(new Page<>(pageNum, pageSize)));
+        Map<String, Object> map = infoService.getPageInfo(pageNum, pageSize);
+        return ApiResponse.ok(map);
     }
 
     @WebLog(description = "电影评分最高的前x个")
@@ -132,8 +135,8 @@ public class InfoController {
         return ApiResponse.ok(infoService.page(new Page<>(pageNum, pageSize), queryWrapper));
     }
 
-    @WebLog(description = "最新发布的电影评分最高的前100个")
-    @ApiOperation(value = "最新发布的电影评分最高的前100个")
+    @WebLog(description = "最新发布的电影评分最高的前25个")
+    @ApiOperation(value = "最新发布的电影评分最高的前25个")
     @GetMapping("/topRated")
     public ApiResponse topRated() {
         return ApiResponse.ok(infoService.topRated());
@@ -172,5 +175,22 @@ public class InfoController {
         map.put("current", pageNum);
         map.put("page", pageCount);
         return ApiResponse.ok(map);
+    }
+
+    @WebLog(description = "分页最新发布的电影评分最高的")
+    @ApiOperation(value = "分页最新发布的电影评分最高的")
+    @GetMapping("/pageTopRated")
+    public ApiResponse pageTopRated(@RequestParam Integer pageNum,
+                                    @RequestParam Integer pageSize) {
+        return ApiResponse.ok(infoService.pageTopRated(pageNum, pageSize));
+    }
+
+    @WebLog(description = "分页电影信息模糊查询不区分大小写")
+    @ApiOperation(value = "分页电影信息模糊查询不区分大小写")
+    @PostMapping("/pageByWebSearch")
+    public ApiResponse findPageByWebSearch(@RequestParam Integer pageNum,
+                                         @RequestParam Integer pageSize,
+                                         @RequestBody SearchDto content) {
+        return ApiResponse.ok(infoService.pageByWebSearch(pageNum, pageSize, content.getContent()));
     }
 }

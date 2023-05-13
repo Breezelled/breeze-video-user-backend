@@ -93,11 +93,13 @@ public class FavoritesController {
         return ApiResponse.ok(favoritesService.page(new Page<>(pageNum, pageSize)));
     }
 
-    @WebLog(description = "根据用户查找其收藏")
-    @ApiOperation(value = "根据用户查找其收藏")
+    @WebLog(description = "根据用户查找其收藏并分页")
+    @ApiOperation(value = "根据用户查找其收藏并分页")
     @PostMapping("/user")
-    public ApiResponse userFavorites(@RequestBody FavoritesLikesDto favoritesLikesDto) {
-        return ApiResponse.ok(infoService.userFavorites(favoritesLikesDto.getUserId()));
+    public ApiResponse userFavorites(@RequestBody FavoritesLikesDto favoritesLikesDto,
+                                     @RequestParam Integer pageNum,
+                                     @RequestParam Integer pageSize) {
+        return ApiResponse.ok(infoService.userFavorites(favoritesLikesDto.getUserId(), pageNum, pageSize));
     }
 
 }
